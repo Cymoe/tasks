@@ -3,13 +3,18 @@ import clientPromise from '@/lib/mongodb'
 import { ObjectId } from 'mongodb'
 
 export async function GET() {
-  const client = await clientPromise
-  const db = client.db("my-next-app")
-  const tasks = await db.collection("tasks")
-    .find({})
-    .sort({ createdAt: -1 }) // Sort by createdAt in descending order
-    .toArray()
-  return NextResponse.json(tasks)
+  try {
+    const client = await clientPromise
+    const db = client.db("my-next-app")
+    const tasks = await db.collection("tasks")
+      .find({})
+      .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+      .toArray()
+    return NextResponse.json(tasks)
+  } catch (error) {
+    console.error('Failed to fetch tasks:', error)
+    return NextResponse.json({ error: 'Failed to fetch tasks' }, { status: 500 })
+  }
 }
 
 export async function POST(request: Request) {
