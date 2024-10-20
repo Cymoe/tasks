@@ -9,7 +9,11 @@ if (!process.env.MONGODB_URI) {
 }
 
 const uri = process.env.MONGODB_URI
-const options = {}
+const options = {
+  ssl: true,
+  tls: true,
+  tlsAllowInvalidCertificates: true,
+}
 
 let client
 let clientPromise: Promise<MongoClient>
